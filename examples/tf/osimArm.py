@@ -47,7 +47,7 @@ def osimArm(ctxt=None, seed=1):
     set_seed(seed)
     with LocalTFRunner(ctxt) as runner:
         
-        env = Arm2DVecEnv(visualize=False)
+        env = GarageEnv(Arm2DVecEnv())
         env.reset()
         
         policy = ContinuousMLPPolicy(env_spec=env.spec,
@@ -81,19 +81,19 @@ def osimArm(ctxt=None, seed=1):
                     policy_optimizer=tf.compat.v1.train.AdamOptimizer,
                     qf_optimizer=tf.compat.v1.train.AdamOptimizer)
         
-        # env.render()
-        # obs = env.step(env.action_space.sample())
-        # steps = 0
-        # n_steps = 1000
+        env.render()
+        obs = env.step(env.action_space.sample())
+        steps = 0
+        n_steps = 1000
         
-        # while True:
-        #     if steps == n_steps:
-        #         env.close()
-        #         break
-        #     temp = policy.get_action(obs[0])
-        #     obs = env.step(temp[0])
-        #     env.render()
-        #     steps += 1
+        while True:
+            if steps == n_steps:
+                env.close()
+                break
+            temp = policy.get_action(obs[0])
+            obs = env.step(temp[0])
+            env.render()
+            steps += 1
             
         
 
